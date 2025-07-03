@@ -1,0 +1,238 @@
+local Mutations = {
+	["Shocked"] = {
+		["Name"] = "Shocked",
+		["ValueMulti"] = 100,
+		["Color"] = Color3.fromRGB(255, 255, 100),
+		["_AddFX"] = function(p1, p2, p3)
+			local materialCache = {}
+			if p3 then
+				for _, fx in game.ServerStorage.Mutation_FX.Shocked:GetChildren() do
+					local fxClone = fx:Clone()
+					fxClone.Parent = p3
+					fxClone:AddTag("Cleanup_Shock")
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					materialCache[part] = materialCache[part] or part.Material
+					part.Material = Enum.Material.Neon
+					part.Color = Color3.fromRGB(255, 255, 100)
+					part:AddTag("ShockedVisual")
+				end
+			end
+			return materialCache
+		end,
+		["_RemoveFX"] = function(_, p2, p3, materialCache)
+			if p3 then
+				for _, fx in p3:GetChildren() do
+					if fx:HasTag("Cleanup_Shock") then
+						fx:Destroy()
+					end
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and part:HasTag("ShockedVisual") then
+					if materialCache[part] then
+						part.Material = materialCache[part]
+						materialCache[part] = nil
+					end
+					part:RemoveTag("ShockedVisual")
+				end
+			end
+		end
+	},
+	["Disco"] = {
+		["Name"] = "Disco",
+		["ValueMulti"] = 125,
+		["Color"] = Color3.fromRGB(255, 105, 180),
+		["_AddFX"] = function(p1, p2, p3)
+			local materialCache = {}
+			local colorCache = {}
+			if p3 then
+				for _, fx in game.ServerStorage.Mutation_FX.Disco:GetChildren() do
+					local fxClone = fx:Clone()
+					fxClone.Parent = p3
+					fxClone.Enabled = true
+					fxClone:AddTag("Cleanup_Disco")
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					colorCache[part] = colorCache[part] or part.Color
+					materialCache[part] = materialCache[part] or part.Material
+					part.Material = Enum.Material.Neon
+					part.Color = Color3.fromRGB(255, 105, 180)
+					part:AddTag("Discofied")
+				end
+			end
+			return { materialCache = materialCache, colorCache = colorCache }
+		end,
+		["_RemoveFX"] = function(_, p2, p3, caches)
+			local materialCache = caches.materialCache
+			local colorCache = caches.colorCache
+			if p3 then
+				for _, fx in p3:GetChildren() do
+					if fx:HasTag("Cleanup_Disco") then
+						fx:Destroy()
+					end
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and part:HasTag("Discofied") then
+					part.Color = colorCache[part] or part.Color
+					part:RemoveTag("Discofied")
+					if materialCache[part] then
+						part.Material = materialCache[part]
+						materialCache[part] = nil
+					end
+					colorCache[part] = nil
+				end
+			end
+		end
+	},
+	["Molten"] = {
+		["Name"] = "Molten",
+		["ValueMulti"] = 25,
+		["Color"] = Color3.fromRGB(223, 100, 0),
+		["_AddFX"] = function(p1, p2, p3)
+			local colorCache = {}
+			local materialCache = {}
+			local colors = {
+				"Neon orange",
+				"Br. yellowish orange",
+				"Bright orange",
+				"Bright red",
+				"Bright yellow"
+			}
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					colorCache[part] = colorCache[part] or part.BrickColor.Color
+					materialCache[part] = materialCache[part] or part.Material
+					part.BrickColor = BrickColor.new(colors[Random.new():NextInteger(1, #colors)])
+					part.Material = Enum.Material.Neon
+					part:AddTag("MoltenVisual")
+				end
+			end
+			return { colorCache = colorCache, materialCache = materialCache }
+		end,
+		["_RemoveFX"] = function(_, p2, p3, caches)
+			local colorCache = caches.colorCache
+			local materialCache = caches.materialCache
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and part:HasTag("MoltenVisual") then
+					part.BrickColor = colorCache[part] and BrickColor.new(colorCache[part]) or part.BrickColor
+					part:RemoveTag("MoltenVisual")
+					if materialCache[part] then
+						part.Material = materialCache[part]
+						materialCache[part] = nil
+					end
+					colorCache[part] = nil
+				end
+			end
+		end
+	},
+	["Verdant"] = {
+		["Name"] = "Verdant",
+		["ValueMulti"] = 4,
+		["Color"] = Color3.fromRGB(34, 139, 34),
+		["_AddFX"] = function(p1, p2, p3)
+			local colorCache = {}
+			local materialCache = {}
+			if p3 then
+				for _, fx in game.ServerStorage.Mutation_FX.Verdant:GetChildren() do
+					local fxClone = fx:Clone()
+					fxClone.Parent = p3
+					fxClone.Enabled = true
+					fxClone:AddTag("Cleanup_Verdant")
+				end
+			end
+			for i, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					if i % 6 == 0 then
+						local swirl = game.ServerStorage.Mutation_FX.Verdant.LeafSwirl:Clone()
+						swirl.Parent = part
+						swirl.Enabled = true
+						swirl:AddTag("Cleanup_Verdant")
+					end
+					local origColor = part.Color
+					colorCache[part] = colorCache[part] or origColor
+					materialCache[part] = materialCache[part] or part.Material
+					part.Color = Color3.fromRGB(origColor.R * 166 * 0.5, math.clamp(origColor.G * 255 + 150, 0, 255) * 0.5, origColor.B * 166 * 0.5)
+					part:AddTag("VerdantVisual")
+				end
+			end
+			return { colorCache = colorCache, materialCache = materialCache }
+		end,
+		["_RemoveFX"] = function(_, p2, p3, caches)
+			local colorCache = caches.colorCache
+			local materialCache = caches.materialCache
+			if p3 then
+				for _, fx in p3:GetChildren() do
+					if fx:HasTag("Cleanup_Verdant") then
+						fx:Destroy()
+					end
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and part:HasTag("VerdantVisual") then
+					part.Color = colorCache[part] or part.Color
+					part:RemoveTag("VerdantVisual")
+					if materialCache[part] then
+						part.Material = materialCache[part]
+						materialCache[part] = nil
+					end
+					colorCache[part] = nil
+				end
+			end
+		end
+	},
+	["Celestial"] = {
+		["Name"] = "Celestial",
+		["ValueMulti"] = 120,
+		["Color"] = Color3.fromRGB(255, 0, 255),
+		["_AddFX"] = function(p1, p2, p3)
+			local materialCache = {}
+			if p3 then
+				for _, fx in game.ServerStorage.Mutation_FX.Celestial:GetChildren() do
+					local fxClone = fx:Clone()
+					fxClone.Parent = p3
+					fxClone.Enabled = true
+					fxClone:AddTag("Cleanup_Celestial")
+					fxClone:AddTag("Effect")
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					materialCache[part] = materialCache[part] or part.Material
+					part.Reflectance = 0.5
+					part.Color = Color3.fromRGB(255, 0, 255)
+					part:AddTag("CelestialVisual")
+				end
+			end
+			return materialCache
+		end,
+		["_RemoveFX"] = function(_, p2, p3, materialCache)
+			if p3 then
+				for _, fx in p3:GetChildren() do
+					if fx:HasTag("Cleanup_Celestial") then
+						fx:Destroy()
+					end
+				end
+			end
+			for _, part in p2:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and part:HasTag("CelestialVisual") then
+					part.Reflectance = 0
+					part:RemoveTag("CelestialVisual")
+					if materialCache[part] then
+						part.Material = materialCache[part]
+						materialCache[part] = nil
+					end
+				end
+			end
+		end
+	}
+}
+
+_G.Mutations = Mutations
+
+return Mutations
