@@ -1,1 +1,178 @@
--- kode
+local Mutations = {
+	["Shocked"] = {
+		["Name"] = "Shocked",
+		["ValueMulti"] = 100,
+		["Color"] = Color3.fromRGB(255, 255, 100),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Shocked:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx:AddTag("Cleanup_Shock")
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					part.Material = Enum.Material.Neon
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Shock") then
+						v:Destroy()
+					end
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if part:IsA("BasePart") or part:IsA("UnionOperation") then
+					part.Material = Enum.Material.Plastic
+				end
+			end
+		end
+	},
+	["Disco"] = {
+		["Name"] = "Disco",
+		["ValueMulti"] = 125,
+		["Color"] = Color3.fromRGB(255, 105, 180),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				local particle = Instance.new("ParticleEmitter")
+				particle.Color = ColorSequence.new(Color3.new(1, 0, 0), Color3.new(0, 0, 1))
+				particle.Parent = fxPart
+				particle:AddTag("Cleanup_Disco")
+			end
+			for _, part in plant:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					part.Material = Enum.Material.Neon
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Disco") then
+						v:Destroy()
+					end
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if part:IsA("BasePart") or part:IsA("UnionOperation") then
+					part.Material = Enum.Material.Plastic
+				end
+			end
+		end
+	},
+	["Frosted"] = {
+		["Name"] = "Frosted",
+		["ValueMulti"] = 50,
+		["Color"] = Color3.fromRGB(135, 206, 250),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Frosted:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx:AddTag("Cleanup_Frosted")
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					part.Reflectance = 0.3
+					part.Color = Color3.fromRGB(135, 206, 250)
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Frosted") then
+						v:Destroy()
+					end
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if part:IsA("BasePart") or part:IsA("UnionOperation") then
+					part.Reflectance = 0
+				end
+			end
+		end
+	},
+	["Blazing"] = {
+		["Name"] = "Blazing",
+		["ValueMulti"] = 75,
+		["Color"] = Color3.fromRGB(255, 69, 0),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Blazing:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx:AddTag("Cleanup_Blazing")
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					part.Material = Enum.Material.Neon
+					part.Color = Color3.fromRGB(255, 69, 0)
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Blazing") then
+						v:Destroy()
+					end
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if part:IsA("BasePart") or part:IsA("UnionOperation") then
+					part.Material = Enum.Material.Plastic
+				end
+			end
+		end
+	},
+	["Glowing"] = {
+		["Name"] = "Glowing",
+		["ValueMulti"] = 60,
+		["Color"] = Color3.fromRGB(0, 255, 0),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Glowing:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx:AddTag("Cleanup_Glowing")
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if (part:IsA("BasePart") or part:IsA("UnionOperation")) and not part:HasTag("Effect") then
+					part.Material = Enum.Material.Neon
+					part.Color = Color3.fromRGB(0, 255, 0)
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Glowing") then
+						v:Destroy()
+					end
+				end
+			end
+			for _, part in plant:GetDescendants() do
+				if part:IsA("BasePart") or part:IsA("UnionOperation") then
+					part.Material = Enum.Material.Plastic
+				end
+			end
+		end
+	}
+	-- Tambahkan mutasi lain di sini sesuai kebutuhan
+}
+
+_G.Mutations = Mutations
+return Mutations
