@@ -170,8 +170,81 @@ local Mutations = {
 				end
 			end
 		end
-	}
-	-- Tambahkan mutasi lain di sini sesuai kebutuhan
+	},
+	["Cloudtouched"] = {
+		["Name"] = "Cloudtouched",
+		["ValueMulti"] = 5,
+		["Color"] = Color3.fromRGB(225, 255, 255),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Cloudtouched:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx:AddTag("Cleanup_Cloudtouched")
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Cloudtouched") then
+						v:Destroy()
+					end
+				end
+			end
+		end
+	},
+	["Fried"] = {
+		["Name"] = "Fried",
+		["ValueMulti"] = 8,
+		["Color"] = Color3.fromRGB(223, 110, 34),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Fried:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx.Enabled = true
+					fx:AddTag("Cleanup_Fried")
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Fried") then
+						v:Destroy()
+					end
+				end
+			end
+		end
+	},
+	["Aurora"] = {
+		["Name"] = "Aurora",
+		["ValueMulti"] = 90,
+		["Color"] = Color3.fromRGB(99, 89, 175),
+		["_AddFX"] = function(self, plant, fxPart)
+			self:_RemoveFX(plant, fxPart)
+			if fxPart then
+				for _, v in game.ServerStorage.Mutation_FX.Aurora:GetChildren() do
+					local fx = v:Clone()
+					fx.Parent = fxPart
+					fx.Enabled = true
+					fx:AddTag("Cleanup_Aurora")
+				end
+			end
+		end,
+		["_RemoveFX"] = function(self, plant, fxPart)
+			if fxPart then
+				for _, v in fxPart:GetChildren() do
+					if v:HasTag("Cleanup_Aurora") then
+						v:Destroy()
+					end
+				end
+			end
+		end
+	},
 }
 
 _G.Mutations = Mutations
